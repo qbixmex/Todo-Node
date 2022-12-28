@@ -1,0 +1,16 @@
+services:
+  todo_development:
+    container_name: todo-development-db
+    image: mysql:latest
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+
+    environment:
+      MYSQL_DATABASE: todo_development
+      MYSQL_ROOT_PASSWORD: secretpassword
+
+    ports:
+      - 3306:3306
+
+    volumes:
+      - ./mysql/db-mysql-dev:/data/db

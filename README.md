@@ -10,6 +10,12 @@
 > npm install
 ```
 
+## Start Docker Image
+
+```bash
+> docker-compose up -d 
+```
+
 ## Available Scripts
 
 ### Start Production Server
