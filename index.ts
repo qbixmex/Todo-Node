@@ -1,13 +1,13 @@
-const express = require('express');
+import express, { Express, Request, Response } from 'express';
 
 //* Instantiate express app
-const app = express();
+const app: Express = express();
 
 //* Define server port
 const PORT = 4000;
 
 //* Create root endpoint
-app.get('/', (request, response) => {
+app.get('/', (_request: Request, response: Response) => {
   response.send('Express + Typescript Server');
 });
 
