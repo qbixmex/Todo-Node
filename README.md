@@ -31,3 +31,13 @@
 # With NPM
 > npm run dev
 ```
+
+### Build to production
+
+```bash
+# With Yarn
+> yarn build
+
+# With NPM
+> npm run build
+```

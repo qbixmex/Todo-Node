@@ -1,10 +1,14 @@
 import express, { Express, Request, Response } from 'express';
+import dotenv from 'dotenv';
 
 //* Instantiate express app
 const app: Express = express();
 
+//* Environment Variables
+dotenv.config();
+
 //* Define server port
-const PORT = 4000;
+const PORT = process.env.PORT;
 
 //* Create root endpoint
 app.get('/', (_request: Request, response: Response) => {
