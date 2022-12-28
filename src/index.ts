@@ -1,10 +1,11 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { Task } from './tasks/tasks.entity';
+import taskRouter from './tasks/tasks.router';
 
 //* Instantiate express app
 const app: Express = express();
@@ -47,11 +48,6 @@ export const AppDataSource = new DataSource({
   synchronize: true,
 });
 
-//* Create root endpoint
-app.get('/', (_request: Request, response: Response) => {
-  response.send("Express + Typescript Server");
-});
-
 AppDataSource.initialize()
   .then(() => {
     //* Start listening to the request on the defined port
@@ -65,4 +61,5 @@ AppDataSource.initialize()
     console.error('Error:', error);
   });
 
-
+//* ROUTES
+app.use('/api/tasks', taskRouter);

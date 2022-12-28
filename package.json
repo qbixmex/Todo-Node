@@ -1,6 +1,6 @@
 {
   "name": "todo-node",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Express API Todo App",
   "main": "index.js",
   "scripts": {

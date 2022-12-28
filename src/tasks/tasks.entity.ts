@@ -1,8 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { Priority } from './enums/Priority';
 import { Status } from './enums/Status';
 
