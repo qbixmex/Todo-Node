@@ -1,9 +1,29 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
 
 //* Instantiate express app
 const app: Express = express();
+
+//* Cross Origin Resource Sharing
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:4000',
+  ],
+}));
+
+//* Parse Request Body
+app.use(express.json());
+
+//* Morgan
+app.use(morgan('dev'));
+
+//* Helmet 
+app.use(helmet());
 
 //* Environment Variables
 dotenv.config();
