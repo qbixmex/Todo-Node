@@ -1,6 +1,6 @@
 {
   "name": "todo-node",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Express API Todo App",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-validator": "^6.14.2",
     "helmet": "^6.0.1",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",

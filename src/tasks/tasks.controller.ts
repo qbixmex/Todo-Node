@@ -1,11 +1,14 @@
 import { AppDataSource } from '../';
 import { Task } from './tasks.entity';
 import { instanceToPlain } from 'class-transformer';
+import { Repository } from 'typeorm';
 
 export class TasksController {
-  constructor(
-    private taskRepository = AppDataSource.getRepository(Task),
-  ) {}
+  private taskRepository: Repository<Task>;
+
+  constructor() {
+    this.taskRepository = AppDataSource.getRepository(Task);
+  }
 
   public async getAll(): Promise<Task[]|void> {
     //* Declare a variable to hold all tasks
