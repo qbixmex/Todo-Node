@@ -17,20 +17,20 @@ class TasksController {
       //* Fetch all tasks using the repository
       tasks = await AppDataSource.getRepository(Task).find({
         order: {
-          date: 'ASC',
+          date: 'DESC',
         },
       });
 
       //* Convert the tasks instance to an array of objects
       tasks = instanceToPlain(tasks) as Task[];
-
-      return response.status(200).json(tasks);
     } catch (_error) {
       return response
         .status(500)
         .json({ error: 'Internal Server Error'});
     }
-  };
+
+    return response.status(200).json(tasks);
+  }
 
   public async create(
     request: Request,
@@ -65,14 +65,14 @@ class TasksController {
 
       //* Convert the task instance to an object
       createdTask = instanceToPlain(createdTask) as Task;
-
-      return response.status(201).json(createdTask);
     } catch (_error) {
       return response
         .status(500)
         .json({ error: 'Internal Server Error'});
     }
-  };
+
+    return response.status(201).json(createdTask);
+  }
 
   public async update(
     request: Request,

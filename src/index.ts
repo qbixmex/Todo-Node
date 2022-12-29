@@ -7,6 +7,9 @@ import morgan from 'morgan';
 import { Task } from './tasks/tasks.entity';
 import taskRouter from './tasks/tasks.router';
 
+//* Environment Variables
+dotenv.config();
+
 //* Instantiate express app
 const app: Express = express();
 
@@ -22,13 +25,12 @@ app.use(cors({
 app.use(express.json());
 
 //* Morgan
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
 
 //* Helmet 
 app.use(helmet());
-
-//* Environment Variables
-dotenv.config();
 
 //* Define server port
 const PORT = process.env.PORT;
@@ -53,8 +55,8 @@ AppDataSource.initialize()
     //* Start listening to the request on the defined port
     app.listen(PORT, () => {
       console.log(`Server Running at: ${HOST}:${PORT}`);
+      console.log('Data Source has been initialized');
     });
-    console.log('Data Source has been initialized');
   })
   .catch((error) => {
     console.error('Error during Data Source initialization');

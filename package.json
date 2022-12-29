@@ -1,11 +1,11 @@
 {
   "name": "todo-node",
-  "version": "0.14.0",
+  "version": "1.0.0",
   "description": "Express API Todo App",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "start": "NODE_ENV=production node dist/index.js",
+    "dev": "NODE_ENV=development nodemon src/index.ts",
     "build": "npx tsc"
   },
   "keywords": [
