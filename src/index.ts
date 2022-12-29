@@ -62,4 +62,4 @@ AppDataSource.initialize()
   });
 
 //* ROUTES
-app.use('/api/tasks', taskRouter);
+app.use('/api', taskRouter);

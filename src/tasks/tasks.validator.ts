@@ -2,7 +2,7 @@ import { body, ValidationChain } from 'express-validator';
 import { Priority } from './enums/Priority';
 import { Status } from './enums/Status';
 
-export const createValidator: ValidationChain[] = [
+export const create: ValidationChain[] = [
   body('title')
     .not()
     .isEmpty()
@@ -29,6 +29,25 @@ export const createValidator: ValidationChain[] = [
       + `${Priority.normal}\ `
       + `or ${Priority.high}`
     ),
+  body('status')
+    .trim()
+    .isIn([Status.todo, Status.inProgress, Status.completed])
+    .withMessage(
+      'Status can only be\ '
+      + `${Status.todo},\ `
+      + `${Status.inProgress}\ `
+      + `or ${Status.completed}`
+    ),
+];
+
+export const update: ValidationChain[] = [
+  body('id')
+    .not()
+    .isEmpty()
+    .withMessage('The task ID is is mandatory')
+    .trim()
+    .isString()
+    .withMessage('ID must be a valid uuid string'),
   body('status')
     .trim()
     .isIn([Status.todo, Status.inProgress, Status.completed])

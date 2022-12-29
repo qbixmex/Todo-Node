@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { AppDataSource } from '../index';
 import { Task } from './tasks.entity';
-import { instanceToPlain } from 'class-transformer';
+import { instanceToPlain, plainToInstance } from 'class-transformer';
 import { validationResult } from 'express-validator';
+import { UpdateResult } from 'typeorm';
 
 class TasksController { 
   public async getAll(
@@ -24,12 +25,14 @@ class TasksController {
       tasks = instanceToPlain(tasks) as Task[];
 
       return response.status(200).json(tasks);
-    } catch (error) {
-      return response.status(500).json({ error: 'Internal Server Error'});
+    } catch (_error) {
+      return response
+        .status(500)
+        .json({ error: 'Internal Server Error'});
     }
   };
 
-  public async createTask(
+  public async create(
     request: Request,
     response: Response
   ): Promise<Response> {    
@@ -65,9 +68,74 @@ class TasksController {
 
       return response.status(201).json(createdTask);
     } catch (_error) {
-      return response.status(500).json({ error: 'Internal Server Error'});
+      return response
+        .status(500)
+        .json({ error: 'Internal Server Error'});
     }
   };
+
+  public async update(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    const errors = validationResult(request);
+
+    if (!errors.isEmpty()) {
+      return response.status(400).json({
+        errors: errors.array(),
+      });
+    }
+
+    //* Declare a variable to hold a task
+    let task: Task | null;
+    const requestId = request.body.id as string;
+    const requestStatus = request.body.status as string;
+
+    try {
+      //* Fetch a single task using the repository
+      //* and find the task
+      task = await AppDataSource
+        .getRepository(Task)
+        .findOne({
+          where: { id: requestId }
+        });
+    } catch (_error) {
+      return response
+        .status(500)
+        .json({ error: 'Internal Server Error'});
+    }
+
+    //* Response 404 if task was not founded
+    if (!task) {
+      return response
+        .status(404)
+        .json({ error: `The task with given ID: "${requestId}" does not exist`});
+    }
+
+    //* Declare a variable for updatedTask
+    let updatedTask: UpdateResult;
+
+    try {
+      //* Update Task
+      updatedTask = await AppDataSource
+        .getRepository(Task)
+        .update(
+          requestId,
+          plainToInstance(Task, {
+            status: requestStatus
+          })
+        );
+    } catch (_error) {
+      return response
+        .status(500)
+        .json({ error: 'Internal Server Error'});
+    }
+
+    //* Convert to plain object
+    updatedTask = instanceToPlain(updatedTask) as UpdateResult;
+
+    return response.status(200).json(updatedTask);
+  }
 }
 
 export const taskController = new TasksController();
