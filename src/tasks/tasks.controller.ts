@@ -1,22 +1,20 @@
-import { AppDataSource } from '../';
+import { Request, Response } from 'express';
+import { AppDataSource } from '../index';
 import { Task } from './tasks.entity';
 import { instanceToPlain } from 'class-transformer';
-import { Repository } from 'typeorm';
+import { validationResult } from 'express-validator';
 
-export class TasksController {
-  private taskRepository: Repository<Task>;
-
-  constructor() {
-    this.taskRepository = AppDataSource.getRepository(Task);
-  }
-
-  public async getAll(): Promise<Task[]|void> {
+class TasksController { 
+  public async getAll(
+    _request: Request,
+    response: Response
+  ): Promise<Response> {
     //* Declare a variable to hold all tasks
     let tasks: Task[];
 
     try {
       //* Fetch all tasks using the repository
-      tasks = await this.taskRepository.find({
+      tasks = await AppDataSource.getRepository(Task).find({
         order: {
           date: 'ASC',
         },
@@ -25,9 +23,34 @@ export class TasksController {
       //* Convert the tasks instance to an array of objects
       tasks = instanceToPlain(tasks) as Task[];
 
-      return tasks;
+      return response.status(200).json(tasks);
     } catch (error) {
-      console.error(error);
+      return response.status(500).json({ error: 'Internal Server Error'});
+    }
+  };
+
+  public async createTask(
+    request: Request,
+    response: Response
+  ): Promise<Response> {    
+    const errors = validationResult(request);
+
+    if (!errors.isEmpty()) {
+      return response.status(400).json({
+        errors: errors.array(),
+      });
+    }
+
+    //* Create a new instance of the task
+    //* Add the required properties to the Task object
+    //* Add the new task to the database
+
+    try {
+      return response.status(200).json({ ok: true });
+    } catch (_error) {
+      return response.status(500).json({ error: 'Internal Server Error'});
     }
   };
 }
+
+export const taskController = new TasksController();
