@@ -10,6 +10,9 @@ export class Task {
   @Column({ type: 'text' })
   title: string;
 
+  @Column({ type: 'varchar', length: 255 })
+  date: string;
+
   @Column({ type: 'longtext' })
   description: string;
 

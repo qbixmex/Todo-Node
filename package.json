@@ -1,6 +1,6 @@
 {
   "name": "todo-node",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Express API Todo App",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,7 @@
   "author": "Daniel González Briseño",
   "license": "ISC",
   "dependencies": {
+    "class-transformer": "^0.5.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
